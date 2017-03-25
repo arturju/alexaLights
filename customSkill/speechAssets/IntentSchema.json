@@ -1,0 +1,104 @@
+{
+ "intents": [
+
+ {
+  "intent": "onOffIntent",
+   "slots": [
+   {
+    "name": "onOrOff",
+    "type": "ON_OFF"
+   },
+
+   {
+   	"name": "brightnessCmd",
+    "type": "BRIGHT_LVLS"
+   },
+
+   {
+    "name": "deviceName",
+    "type": "DEVICE_NAMES"
+   }
+
+  ]
+ },
+
+{
+  "intent": "turnUpIntent",
+  "slots": [
+   {
+    "name": "partyType",
+    "type": "PARTY_WORDS"
+   }
+  ]
+ },
+
+{
+  "intent": "peopleIntent",
+  "slots": [
+   {
+    "name": "peopleNames",
+    "type": "PEOPLE_NAMES"
+   }
+  ]
+ },
+
+
+ {
+  "intent": "ProfanityIntent",
+  "slots": [
+   {
+    "name": "curseWord",
+    "type": "CURSE_WORDS"
+   }
+  ]
+ },
+
+
+ {
+  "intent": "AMAZON.HelpIntent"
+ }
+
+ ]
+}
+
+//--------- copy text above this line to Intent Schema of your Lambda function
+
+/* Custom Slot Types:
+
+ON_OFF
+on
+off
+
+BRIGHT_LVLS
+10
+20
+30
+40
+50
+60
+70
+80
+90
+100
+
+DEVICE_NAMES
+kitchen lights
+living room lights
+
+CURSE_WORDS
+fuck
+fuck you
+shit
+bitch
+banana
+
+PARTY_WORDS
+turn up
+party time
+party
+
+PEOPLE_NAMES
+Andrew
+Greg
+Greg Gorman
+*/

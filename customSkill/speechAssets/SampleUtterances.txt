@@ -1,0 +1,26 @@
+AMAZON.HelpIntent what can I say
+AMAZON.HelpIntent what can you do
+AMAZON.HelpIntent what can I ask you
+
+ProfanityIntent {curseWord}
+ProfanityIntent go {curseWord} yourself
+ProfanityIntent what do you think of {curseWord}
+
+onOffIntent turn 	 {deviceName} {onOrOff}
+onOffIntent turn the {deviceName} {onOrOff}
+onOffIntent to turn the {deviceName} {onOrOff}
+onOffIntent turn 	 {deviceName} {onOrOff} to {brightnessCmd} 
+onOffIntent turn the {deviceName} {onOrOff} to {brightnessCmd} 
+onOffIntent to turn the {deviceName} {onOrOff} to {brightnessCmd} 
+onOffIntent turn the {deviceName} to {brightnessCmd} 
+onOffIntent turn the {deviceName} to {brightnessCmd} brightness
+onOffIntent turn the {deviceName} to {brightnessCmd} percent
+onOffIntent to turn the {deviceName} to {brightnessCmd} percent
+onOffIntent turn the {deviceName} to {brightnessCmd} percent brightness
+
+peopleIntent what it thinks of {peopleNames}
+peopleIntent what he thinks of {peopleNames}
+peopleIntent who is {peopleNames}
+
+turnUpIntent to   {partyType}
+turnUpIntent lets {partyType}

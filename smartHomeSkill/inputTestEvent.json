@@ -1,0 +1,41 @@
+// TurnOnRequest or TurnOffRequest
+{
+  "header": {
+    "payloadVersion": "1",
+    "namespace": "Alexa.ConnectedHome.Control",
+    "name": "TurnOnRequest"
+  },
+  "payload": {
+    "appliance": {
+      "additionalApplianceDetails": {
+        "deviceId": "[YOUR_DEVICE_ID_HERE]"
+      },
+      "applianceId": "A146-3456-b31d-7ec4c146c5ea"
+    },
+    "accessToken": "[YOUR_TOKEN_HERE]"
+  }
+}
+
+// Dimming lights
+{
+  "header": {
+    "payloadVersion": "1",
+    "namespace": "Alexa.ConnectedHome.Control",
+    "name": "SetPercentageRequest"
+  },
+  
+  "payload": {
+    "percentageState": {
+        "value": "55"
+    },
+    
+    "appliance": {
+      "additionalApplianceDetails": {
+        "deviceId": "220033000b47343432313031"
+      },
+      "applianceId": "A146-3456-b31d-7ec4c146c5ea"
+    },
+    
+    "accessToken": "da51fb9df5c254672f0476e51eb0efc12c9f1009"
+  }
+}
