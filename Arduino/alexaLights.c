@@ -9,9 +9,10 @@
 /*-----------------------------------------------------------------------------
  ** Includes
  ** Any struct definitions must be put in a separate .h file because the IDE
- ** parses sketch, extracts function prototypes and moves them to the top
+ ** parses sketch, extracts function prototypes and moves them to the top; we
+ ** can't initialize Pin variables in the same sketch
  **---------------------------------------------------------------------------*/
-#include "myPin.h"
+#include "alexaLights.h"
 
 /*-----------------------------------------------------------------------------
  ** Global Defines/Typedefs/Enums/Macros.
@@ -24,9 +25,6 @@ Pin *pInPin[]   = {&pinD3};
 
 #define OUT_ARRAY_SIZE  sizeof(pOutPin)/sizeof(pOutPin[0])
 #define IN_ARRAY_SIZE   sizeof(pInPin)/sizeof(pInPin[0])
-#define FADE_DONE       1
-#define FADING_DOWN     2
-#define FADING_UP       3
 
 unsigned long int pinUpdateInterval  = 15;          // update fade value every 15 ms */
 unsigned long     pinTimeMark        = 0;
@@ -39,33 +37,6 @@ int               partyFlag          = 0;
 int               autoMode           = 0;
 
 /*-----------------------------------------------------------------------------
- ** Function: smoothPinCtrl()
- **
- ** Arguments:
- ** *pinName : pointer to pin structure
- ** analogCmd: cmd to set .valueEnd of pinName to. 0 -255
- **---------------------------------------------------------------------------*/
-void smoothPinCtrl(Pin *pinName, int analogCmd){
-    pinName->valueEnd = constrain(analogCmd, 0, 255);
-    pinName->state    = (pinName->valueEnd > pinName->valueNow) ? FADING_UP:FADING_DOWN;
-}
-
-/*-----------------------------------------------------------------------------
- ** Function: IsTime()
- **
- ** Arguments:
- ** *timeMark   : pointer to value of timeMark variable. Gets compared with millis()
- ** timeInterval: time that must elapse before function returns true
- **---------------------------------------------------------------------------*/
-boolean IsTime(unsigned long *timeMark, unsigned long timeInterval) {
-    if (millis() - *timeMark >= timeInterval) {
-        *timeMark = millis();
-        return true;
-    }
-    return false;
-}
-
-/*-----------------------------------------------------------------------------
  ** Function: turnPinOnOff()
  **
  ** Description: This function gets called by Particle's API.
@@ -73,8 +44,7 @@ boolean IsTime(unsigned long *timeMark, unsigned long timeInterval) {
  **---------------------------------------------------------------------------*/
 int turnPinOnOff(String args){
     Pin     *pinPointer;
-    autoMode     = 0;
-    autoTimeMark = millis();                        // reset autoMode timer
+    autoMode     = 0;   autoTimeMark = millis();  // reset autoMode timer
 
     int pos = args.indexOf(',');
     if(pos == -1)     return -1;                    // return error if function argument has no comma
@@ -103,14 +73,14 @@ int turnPinOnOff(String args){
     Serial.print("pinNum ");  Serial.print(pinNumber);   Serial.print(", ");
     Serial.print("Value: ");  Serial.print(pinValue);    Serial.println();
     
-    for(int i=0; i < OUT_ARRAY_SIZE; i++){
+    for(int i=0; i < OUT_ARRAY_SIZE; i++){ 
         Serial.print("num: ");          Serial.print(pOutPin[i]->pinNum);
         Serial.print(", state: ");      Serial.print(pOutPin[i]->state);
         Serial.print(", valueEnd: ");   Serial.print(pOutPin[i]->valueEnd); Serial.println("");
     }
-    
     return 1;
 }
+
 
 /*-----------------------------------------------------------------------------
  ** Function: partyFunc()
@@ -147,8 +117,11 @@ void setup() {
  ** State machine lives here
  **---------------------------------------------------------------------------*/
 void loop() {
-    
-    // Respond to Pin state changes
+
+    // Read inputs
+    for(int i=0; i < IN_ARRAY_SIZE; i++)    pInPin[i]->valueNow = digitalRead(pInPin[i]->pinNum);
+
+    // Update outputPin states
     for(int i=0; i < OUT_ARRAY_SIZE; i++){
         switch(pOutPin[i]->state){
             case FADING_UP:
@@ -171,26 +144,21 @@ void loop() {
                 break;
         }
     }
-
-    // Read inputs
-    for(int i=0; i < IN_ARRAY_SIZE; i++)    pInPin[i]->valueNow = digitalRead(pInPin[i]->pinNum);
-
     // Update other states
 
     if(autoMode){
-        // If PIR interval has elapsed, fade to 0
+        // If PIR interval has elapsed, fade pinD1 to 0
         if (IsTime(&pirTimeMark, pirTimeOutInterval)){
             digitalWrite(pinD2.pinNum, LOW);
             smoothPinCtrl(&pinD1, 0);
         }
-        // If we have seen a rising edge, reset timer. Make sure pinD1 is high
+        // If we have seen a rising edge on pinD3, reset timer. Make sure pinD1 is high
         if (pinD3.valueNow == HIGH && pinD3.valueEnd == LOW){
             smoothPinCtrl(&pinD1, 255);
             digitalWrite(pinD2.pinNum, HIGH);          // turn indicator LED on
             pirTimeMark     = millis();                // reset PIR timer
         }
     }
-
 
     if(partyFlag){
         for(int i =0; i<=30; i++){
@@ -206,12 +174,11 @@ void loop() {
         partyFlag = 0;
     }
 
-
-    if(IsTime(&autoTimeMark, autoUpdateInterval))   autoMode = 1;   // enable autoMode
+    // Check timers
+    if(IsTime(&autoTimeMark, autoUpdateInterval))   autoMode = 1;   
     
-    // Remember last state: assign previos readings to variables
+
+    // Remember last state: assign previous readings to variables
     for(int i=0; i < IN_ARRAY_SIZE; i++)    pInPin[i]->valueEnd = pInPin[i]->valueNow;
-
-
     
 }

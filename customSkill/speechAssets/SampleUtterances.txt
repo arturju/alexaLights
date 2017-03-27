@@ -6,6 +6,7 @@ ProfanityIntent {curseWord}
 ProfanityIntent go {curseWord} yourself
 ProfanityIntent what do you think of {curseWord}
 
+onOffIntent to turn {onOrOff} the {deviceName}
 onOffIntent turn 	 {deviceName} {onOrOff}
 onOffIntent turn the {deviceName} {onOrOff}
 onOffIntent to turn the {deviceName} {onOrOff}

@@ -31,11 +31,11 @@
     
     "appliance": {
       "additionalApplianceDetails": {
-        "deviceId": "220033000b47343432313031"
+        "deviceId": "[YOUR_DEVICE_ID_HERE]"
       },
       "applianceId": "A146-3456-b31d-7ec4c146c5ea"
     },
     
-    "accessToken": "da51fb9df5c254672f0476e51eb0efc12c9f1009"
+    "accessToken": "[YOUR_TOKEN_HERE]"
   }
 }

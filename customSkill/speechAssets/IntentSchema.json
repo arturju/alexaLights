@@ -63,7 +63,9 @@
 
 //--------- copy text above this line to Intent Schema of your Lambda function
 
-/* Custom Slot Types:
+/****************************
+** Custom Slot Types:
+****************************
 
 ON_OFF
 on
@@ -100,5 +102,7 @@ party
 PEOPLE_NAMES
 Andrew
 Greg
-Greg Gorman
+Greg
+Ethan
+
 */
